@@ -13,7 +13,28 @@ export class CategoryService {
     return this.categoryRepository.find()
   }
 
+  async findById(id: string): Promise<Category> {
+    return this.categoryRepository.findOne(id)
+  }
+
   async create(input: Category): Promise<Category> {
     return this.categoryRepository.save(input)
+  }
+
+  async update(input: Category): Promise<Category> {
+    await this.categoryRepository.update(input.id, {
+      name: input.name,
+      slug: input.slug
+    })
+    return input
+  }
+
+  async delete(id: string): Promise<boolean> {
+    try {
+      await this.categoryRepository.delete(id)
+      return true
+    } catch (err) {
+      return false
+    }
   }
 }
